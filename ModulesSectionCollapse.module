@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * ProcessWire Module Sections Collapse
+ *
+ * 
+ * ProcessWire 2.x 
+ * Copyright (C) 2010 by Ryan Cramer 
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ * 
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ * created: 08/27/2011
+ * author: Philipp Urlich, philipp@urlich.ch
+ *
+ */
+
+class ModulesSectionCollapse extends WireData implements Module {
+
+	/**
+	 * getModuleInfo is a module required by all modules to tell ProcessWire about them
+	 *
+	 * @return array
+	 *
+	 */
+	public static function getModuleInfo() {
+
+		return array(
+
+			'title' => 'Modules Section Collapse', 
+			'version' => 100, 
+			'summary' => 'This module collapses the sections of the Modules page for better overview.',
+			'href' => 'http://processwire.com/talk/index.php/topic,435.0.html',
+			'singular' => true, 
+			'autoload' => true, 
+			);
+	}
+
+	/**
+	 * Initialize the module
+	 *
+	 * ProcessWire calls this when the module is loaded. For 'autoload' modules, this will be called
+	 * when ProcessWire's API is ready. As a result, this is a good place to attach hooks. 
+	 *
+	 */
+	public function init() {
+		$this->addHookAfter('Process::execute', $this, 'loadJS');
+	}
+
+	// attach js to the page only on modules page
+	public function loadJS($event) {
+		if($this->process == 'ProcessModule')
+			$this->config->scripts->add($this->config->urls->ModulesSectionCollapse . "ModulesSectionCollapse.js");
+	}
+}
+?>
